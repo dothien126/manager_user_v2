@@ -1,14 +1,17 @@
-import type { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { defaultConfig } from 'src/configs/database.config';
+import { DataSourceOptions } from 'typeorm'
 
-export const configs: TypeOrmModuleOptions = {
-  type: 'postgres',
-  host: process.env.POSTGRES_HOST,
-  port: Number(process.env.POSTGRES_PORT),
-  username: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DB,
-  entities: [
-    __dirname + 'src/**/*.entity.ts'
-  ],
-  synchronize: true,
-}
+export const ORMConfig: DataSourceOptions = {
+  ...defaultConfig,
+  migrationsTableName: 'migrate_tables',
+  synchronize: false,
+  // Allow both start:prod and start:dev to use migrations
+  // __dirname is either dist or src folder, meaning either
+  // the compiled js in prod or the ts in dev.
+  migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+  cli: {
+    // location of migration should be inside src folder
+    // to be compiled into dist/ folder.
+    migrationsDir: 'src/migrations',
+  },
+};

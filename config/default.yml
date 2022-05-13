@@ -1,0 +1,16 @@
+default:
+  type: postgres
+  host: localhost
+  port: 5432
+  username: postgres
+  password: postgres
+  database: manage_user_v2
+  entities:
+    - 'dist/**/*.entity{.ts,.js}'
+
+swagger:
+  isPublic: 1
+  title: 'Api document'
+  description: 'Project internal api description document'
+  version: '1.0'
+  server: 'http://localhost:3000'
