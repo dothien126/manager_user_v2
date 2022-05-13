@@ -1,3 +1,4 @@
+import { Album } from 'src/album/album.entity';
 import { User } from 'src/user/user.entity';
 import {
   Column,
@@ -45,12 +46,15 @@ export class Photo implements IPhoto {
   })
   status: photoStatus;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  @CreateDateColumn({ name: 'date_created', type: 'timestamp' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true })
+  @UpdateDateColumn({ name: 'date_updated', type: 'timestamp', nullable: true })
   updatedAt?: Date;
 
   @ManyToOne(() => User, (user) => user.photos, { onDelete: 'CASCADE' })
   user: User;
+
+  @ManyToOne(() => Album, (album) => album.photos, { onDelete: 'CASCADE' })
+  album: Album;
 }

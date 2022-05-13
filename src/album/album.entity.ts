@@ -46,13 +46,13 @@ export class Album implements IAlbum {
   })
   status: albumStatus;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  @CreateDateColumn({ name: 'date_created', type: 'timestamp' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true })
+  @UpdateDateColumn({ name: 'date_updated', type: 'timestamp', nullable: true })
   updatedAt?: Date;
 
-  @OneToMany(() => Photo, (photo) => photo.user, {
+  @OneToMany(() => Photo, (photo) => photo.album, {
     cascade: true,
   })
   photos: Photo[];

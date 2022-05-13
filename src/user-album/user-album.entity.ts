@@ -21,7 +21,7 @@ export interface IUserAlbumEntity {
   status: userAlbumStatus;
 }
 
-@Entity({ name: 'User-Album' })
+@Entity({ name: 'User_Album' })
 export class UserAlbum implements IUserAlbumEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

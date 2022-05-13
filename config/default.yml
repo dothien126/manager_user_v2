@@ -1,3 +1,10 @@
+app: 
+  name: manage_user_v2
+  port: 3000
+  env: development
+  url: 127.0.0.1
+  prefix: api/v1
+
 default:
   type: postgres
   host: localhost

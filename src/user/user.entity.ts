@@ -1,6 +1,7 @@
-import { Album } from 'src/album/album.entity';
+import { Post } from 'src/post/post.entity';
 import { Photo } from 'src/photo/photo.entity';
 import { UserAlbum } from 'src/user-album/user-album.entity';
+import { Comment } from 'src/comment/comment.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,7 +9,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   OneToMany,
-  ManyToOne,
 } from 'typeorm';
 
 export enum roleUser {
@@ -61,10 +61,10 @@ export class User implements IUserEntity {
   @Column({ type: 'enum', enum: roleUser, default: roleUser.USER })
   role: roleUser;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  @CreateDateColumn({ name: 'date_registed', type: 'timestamp' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', nullable: true })
+  @UpdateDateColumn({ name: 'date_updated', type: 'timestamp', nullable: true })
   updatedAt?: Date;
 
   @Column({
@@ -79,11 +79,16 @@ export class User implements IUserEntity {
   })
   photos?: Photo[];
 
-  @ManyToOne(() => Album, (album) => album.photos)
-  album: Album;
-
   @OneToMany(() => UserAlbum, (userAlbum) => userAlbum.user, {
     cascade: true,
   })
   userAlbum?: UserAlbum[];
+
+  @OneToMany(() => Post, (post) => post.user, {
+    cascade: true,
+  })
+  posts: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[]
 }
