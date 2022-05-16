@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/share/mailer/mailer.service';
 import { UserService } from 'src/user/user.service';
@@ -38,6 +38,22 @@ export class AuthService {
 
     return user;
   }
+
+  async mailAuhthenticateUser(user: User) {
+    const payload: AuthPayload = {
+      id: user.id,
+      userName: user.userName,
+      email: user.email,
+    };
+    const token = this.jwtService.sign(payload, { expiresIn: '30m' });
+    const content = `Click this link to actice your account:\n ${process.env.FE_URl}/verify/${token}`;
+    try {
+      this.mailService.sendMail(user.email, content);
+    } catch (error) {
+      throw new BadRequestException('Email is not exist!');
+    }
+  }
+
 
   async login(user: User) {
     const payload: AuthPayload = {
