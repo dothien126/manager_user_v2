@@ -15,6 +15,10 @@ default:
   entities:
     - 'dist/**/*.entity{.ts,.js}'
 
+jwt:
+  secret: thisisnotkey
+  expiresTime: 123654
+
 swagger:
   isPublic: 1
   title: 'Api document'

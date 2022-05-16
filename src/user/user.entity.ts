@@ -11,12 +11,12 @@ import {
   OneToMany,
 } from 'typeorm';
 
-export enum roleUser {
+export enum UserRole {
   USER = 'USER',
   ADMIN = 'ADMIN',
 }
 
-export enum userStatus {
+export enum UserStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }
@@ -32,9 +32,9 @@ export interface IUserEntity {
 
   password: string;
 
-  role: roleUser;
+  role: UserRole;
 
-  status: userStatus;
+  status: UserStatus;
 
   createdAt: Date;
 
@@ -58,8 +58,8 @@ export class User implements IUserEntity {
   @Column()
   password: string;
 
-  @Column({ type: 'enum', enum: roleUser, default: roleUser.USER })
-  role: roleUser;
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+  role: UserRole;
 
   @CreateDateColumn({ name: 'date_registed', type: 'timestamp' })
   createdAt: Date;
@@ -69,10 +69,10 @@ export class User implements IUserEntity {
 
   @Column({
     type: 'enum',
-    enum: userStatus,
-    default: userStatus.INACTIVE,
+    enum: UserStatus,
+    default: UserStatus.INACTIVE,
   })
-  status: userStatus;
+  status: UserStatus;
 
   @OneToMany(() => Photo, (photo) => photo.user, {
     cascade: true,
