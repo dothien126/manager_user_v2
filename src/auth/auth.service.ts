@@ -5,7 +5,6 @@ import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt'
 import { AuthPayload } from './interfaces/auth-payload.interface';
 import { User } from 'src/user/user.entity';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 
 @Injectable()
 export class AuthService {
@@ -68,12 +67,5 @@ export class AuthService {
     };
   }
 
-  async forgotPassword(email: string) :Promise<void> {
-    const user = await this.userSerive.findByEmail(email)
-    if(!user) {
-      throw new BadRequestException('Email is not exist!')
-    }
-
-    
-  } 
+  
 }

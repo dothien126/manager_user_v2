@@ -1,6 +1,7 @@
 import { BadRequestException, Body, Controller, Get, HttpException, HttpStatus, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/share/decorators/get-user.decorator';
+import { MailService } from 'src/share/mailer/mailer.service';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -48,7 +49,7 @@ export class AuthController {
   @Post('reactive')
   async reactive(@Body() email: EmailDto) {
     const user = await this.userService.findByEmail(email.email)
-    if(!user || user.status) {
+    if (!user || user.status) {
       throw new BadRequestException(`Email doesn't exist or already active!`)
     }
 
@@ -77,6 +78,4 @@ export class AuthController {
     return this.authService.login(user)
   }
 
-  @Patch('change-password')
-  async changePassword() {}
 }
