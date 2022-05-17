@@ -40,10 +40,8 @@ export class ForgotPasswordService {
     this.mailerService
       .sendMail({
         to: email,
-        from: 'from@example.com',
         subject: 'Forgot Password successful ✔',
         text: 'Forgot Password successful!',
-        template: 'index',
         context: {
           title: 'Forgot Password successful!',
           description:
