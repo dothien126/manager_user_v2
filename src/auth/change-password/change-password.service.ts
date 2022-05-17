@@ -1,4 +1,4 @@
-import { MailerModule, MailerService } from "@nestjs-modules/mailer";
+import { MailerService } from "@nestjs-modules/mailer";
 import { Injectable } from "@nestjs/common";
 import { UserService } from "src/user/user.service";
 import { ChangePasswordDto } from "./change-password.dto";

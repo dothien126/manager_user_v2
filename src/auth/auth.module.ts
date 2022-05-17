@@ -6,6 +6,9 @@ import { MailModule } from 'src/share/mailer/mailer.module';
 import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { ChangePasswordModule } from './change-password/change-password.module';
+import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
+;
 
 @Module({
   imports: [

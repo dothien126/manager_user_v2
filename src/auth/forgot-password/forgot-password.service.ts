@@ -28,14 +28,6 @@ export class ForgotPasswordService {
     
   }
 
-  private passwordRand(password: string): string {
-    const passwordRand = Math.random().toString(36).slice(-8);
-
-    password = bcrypt.hashSync(passwordRand, 8);
-
-    return password;
-  }
-
   private sendMailForgotPassword(email: string, password: string): void {
     this.mailerService
       .sendMail({
