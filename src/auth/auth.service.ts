@@ -5,6 +5,7 @@ import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt'
 import { AuthPayload } from './interfaces/auth-payload.interface';
 import { User } from 'src/user/user.entity';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,14 +13,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly userSerive: UserService,
     private readonly mailService: MailService,
-  ) {}
+  ) { }
 
   async hashPassword(password: string): Promise<string> {
     const saltOrRounds = 10;
     return await bcrypt.hash(password, saltOrRounds)
   }
 
-  async  comparePassword(
+  async comparePassword(
     password: string,
     hashPassword: string,
   ): Promise<boolean> {
@@ -32,7 +33,7 @@ export class AuthService {
   ): Promise<User | false> {
     const user = await this.userSerive.findByUserName(userName);
     const check = await this.comparePassword(password, user.password);
-    if(!user || !check) {
+    if (!user || !check) {
       return false;
     }
 
@@ -55,6 +56,14 @@ export class AuthService {
   }
 
   async login(user: User) {
+    const isUser = this.userSerive.findByEmail(user.email)
+    if (!isUser) {
+      return {
+        message: 'User not found!',
+        status: 400,
+      };
+    }
+
     const payload: AuthPayload = {
       id: user.id,
       userName: user.userName,
@@ -63,9 +72,9 @@ export class AuthService {
 
     return {
       accessToken: this.jwtService.sign(payload),
-      user: {...payload},
+      user: { ...payload },
     };
   }
 
-  
+
 }

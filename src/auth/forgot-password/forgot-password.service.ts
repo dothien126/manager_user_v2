@@ -2,18 +2,14 @@ import { MailerService } from "@nestjs-modules/mailer";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/user/user.entity";
-import { Repository } from "typeorm";
-import { ForgotPasswordDto } from "./forgot-password.dto";
 import * as bcrypt from 'bcrypt'
 import { UserService } from "src/user/user.service";
-import { AuthService } from "../auth.service";
 
 @Injectable()
 export class ForgotPasswordService {
   constructor(
     @InjectRepository(User)
     private readonly mailerService: MailerService,
-    private readonly authService: AuthService,
     private readonly userService: UserService,
   ) {}
 
@@ -24,8 +20,6 @@ export class ForgotPasswordService {
 
     const passwordRand = Math.random().toString(36).slice(-8);
     userUpdate.password = bcrypt.hashSync(passwordRand, 8)
-
-    
   }
 
   private sendMailForgotPassword(email: string, password: string): void {

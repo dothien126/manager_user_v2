@@ -8,12 +8,14 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { ChangePasswordModule } from './change-password/change-password.module';
 import { ForgotPasswordModule } from './forgot-password/forgot-password.module';
-;
+
 
 @Module({
   imports: [
     UserModule,
     MailModule,
+    ChangePasswordModule,
+    ForgotPasswordModule,
     JwtModule.register({
       secret: config.jwt?.secret,
       signOptions: {

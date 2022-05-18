@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -11,9 +12,9 @@ import {
 } from 'typeorm';
 
 export enum postStatus {
-    PUBLIC = 'PUBLIC',
-    PRIVATE = 'PRIVATE',
-  }
+  PUBLIC = 'PUBLIC',
+  PRIVATE = 'PRIVATE',
+}
 
 export interface IPost {
   id: string;
@@ -42,10 +43,10 @@ export class Post implements IPost {
   @Column({ nullable: true })
   content: string;
 
-  @Column({type: 'integer'})
+  @Column({ type: 'integer' })
   like: number;
 
-  @Column({type: 'integer'})
+  @Column({ type: 'integer' })
   dislike: number;
 
   @Column({
@@ -62,7 +63,8 @@ export class Post implements IPost {
   updatedAt?: Date;
 
   @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
-  user: User;
+  @JoinColumn({ name: 'author' })
+  author: User;
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[]

@@ -84,10 +84,10 @@ export class User implements IUserEntity {
   })
   userAlbum?: UserAlbum[];
 
-  @OneToMany(() => Post, (post) => post.user, {
+  @OneToMany(() => Post, (post) => post.author, {
     cascade: true,
   })
-  posts: Post[];
+  posts: Post;
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[]
