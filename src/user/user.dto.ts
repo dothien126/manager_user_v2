@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEmail, IsIn, IsNotEmpty, IsString, MaxLength, MinLength, Validate, ValidateIf } from 'class-validator';
+import { IsEmail, IsIn, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength, Validate, ValidateIf } from 'class-validator';
 import { UserRole, UserStatus } from './user.entity';
 
 export class UserDto {
@@ -46,3 +46,14 @@ export class UserProfileDto {
   email: string;
 }
 
+export class UpdateUserDto {
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  name?: string;
+
+  @ApiPropertyOptional({example: 'Nghĩa Đô, Cầu Giấy, Hà Nội' , description: 'format: (xã phường, quận huyện, tỉnh thành phố)'})
+  @IsString()
+  @IsOptional()
+  address?: string;
+}

@@ -4,8 +4,8 @@ import { AlbumModule } from './album/album.module';
 import { PhotoModule } from './photo/photo.module';
 import { AuthModule } from './auth/auth.module';
 import { typeOrmOptions } from './configs/database.config';
-import { UserAlbum } from './user-album/user-album.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     AlbumModule,
     PhotoModule,
     AuthModule,
-    UserAlbum,
+    // PostModule,
     TypeOrmModule.forRootAsync(typeOrmOptions),
   ],
   controllers: [],

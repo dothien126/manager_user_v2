@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { MailerService } from '@nestjs-modules/mailer'
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class MailService {
-  constructor(private mailerService: MailerService) { }
+  constructor(private mailerService: MailerService) {}
 
   async sendMail(to: string, content: string) {
-    console.log({ to, content });
     this.mailerService
       .sendMail({
         to,
-        subject: 'Hello, welcome!',
+        subject: 'Authentication user!',
         text: content,
         html: `<p>${content}</p>`,
       })

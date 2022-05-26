@@ -27,3 +27,17 @@ export class CreateUserDto {
   password: string;
 
 }
+
+export class ChangePasswordDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(6)
+  currentPassword: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(6)
+  newPassword: string;
+}

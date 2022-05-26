@@ -1,49 +1,65 @@
-import { Controller, Get, HttpStatus, NotFoundException, Param, Put, Res, Body } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { UserProfileDto } from './user.dto';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Put,
+  Res,
+  Body,
+  Post,
+  UseInterceptors,
+  UploadedFile,
+  UseGuards,
+  Patch,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBasicAuth, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
+import { GetUser } from 'src/share/decorators/get-user.decorator';
+import { UpdateUserDto, UserProfileDto } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
 @ApiTags('User')
 @Controller('user')
 export class UserController {
-  constructor (private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
-  @Get('/:userId/profile')
-  public async getUser(
-    @Res() res,
-    @Param('userId') userId: string
-  ): Promise<User> {
-    const user = await this.userService.findById(userId);
-
-    if(!user) {
-      throw new NotFoundException('User does not exist!')
-    }
-
-    return res.status(HttpStatus.OK).json({
-      user: user,
-      status: 200,
-    });
+  @ApiBasicAuth('JWT-auth')
+  @UseGuards(JwtGuard)
+  @Get('/profile')
+  async getUser(@GetUser() user): Promise<User> {
+    return this.userService.getMe(user.id);
   }
 
-  @Put('/:userId/profile')
-  public async updateUserProfile(
-    @Res() res,
-    @Param('userId') userId: string,
-    @Body() userProfileDto: UserProfileDto,
-  ) {
-    try {
-      await this.userService.updateProfile(userId, userProfileDto);
-      
-      return res.status(HttpStatus.OK).json({
-        message: 'User updated successfully!',
-        status: 200,
-      });
-    } catch (err) {
-      return res.status(HttpStatus.BAD_REQUEST).json({
-        message: 'Error: User not updated!',
-        status: 400,
-      });
-    }
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtGuard)
+  @Patch('/update')
+  async updateUserProfile(@GetUser() user, @Body() data: UpdateUserDto) {
+    await this.userService.edit(user.id, data);
+
+    return {
+      success: true,
+    };
   }
+
+  // @Post('avatar')
+  // @UseInterceptors(
+  //   FileInterceptor('image', {
+  //     storage: diskStorage({
+  //       destination: './files',
+  //       filename: editFileName,
+  //     }),
+  //     fileFilter: imageFileFilter,
+  //   }),
+  // )
+  // async uploadedFile(@UploadedFile() file, @Body() body) {
+  //   const response = {
+  //     body,
+  //     originalname: file.originalname,
+  //     filename: file.filename,
+  //   };
+  //   return response;
+  // }
 }

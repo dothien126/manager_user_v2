@@ -47,7 +47,7 @@ export class AuthService {
       email: user.email,
     };
     const token = this.jwtService.sign(payload, { expiresIn: '30m' });
-    const content = `Click this link to active your account:\n ${process.env.FE_URl}/verify/${token}`;
+    const content = `Click this link to active your account: ${process.env.FE_URL}/auth/verify/${token}`;
     try {
       this.mailService.sendMail(user.email, content);
     } catch (error) {
@@ -55,14 +55,24 @@ export class AuthService {
     }
   }
 
-  async login(user: User) {
-    const isUser = this.userSerive.findByEmail(user.email)
-    if (!isUser) {
-      return {
-        message: 'User not found!',
-        status: 400,
-      };
+  async mailForgotPassword(user: User) {
+    const payload: AuthPayload = {
+      id: user.id,
+      userName: user.userName,
+      email: user.email
+    };
+
+    const token = this.jwtService.sign(payload, {expiresIn: '30m'})
+    const content = `Click this link to reset your password:\n ${process.env.FE_URl}/reset-password/${token}`;
+
+    try {
+      this.mailService.sendMail(user.email, content);
+    } catch (error) {
+      throw new BadRequestException('Email is not existed!')
     }
+  }
+
+  async login(user: User) {
 
     const payload: AuthPayload = {
       id: user.id,

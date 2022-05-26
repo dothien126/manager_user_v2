@@ -1,5 +1,6 @@
 import { Photo } from 'src/photo/photo.entity';
 import { UserAlbum } from 'src/user-album/user-album.entity';
+import { User } from 'src/user/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -33,6 +34,9 @@ export class Album implements IAlbum {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({nullable: true})
+  ownerId: string;
+
   @Column({ nullable: true })
   name?: string;
 
@@ -55,10 +59,10 @@ export class Album implements IAlbum {
   @OneToMany(() => Photo, (photo) => photo.album, {
     cascade: true,
   })
-  photos: Photo[];
+  photos?: Photo[];
 
   @OneToMany(() => UserAlbum, (userAlbum) => userAlbum.album, {
     cascade: true,
   })
-  userAlbum?: UserAlbum[];
+  userAlbum?: User[];
 }
