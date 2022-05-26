@@ -16,16 +16,9 @@ export interface IPhoto {
 
   link: string;
 
-  status: photoStatus;
-
   createdAt: Date;
 
   updatedAt?: Date;
-}
-
-export enum photoStatus {
-  PUBLIC = 'PUBLIC',
-  PRIVATE = 'PRIVATE',
 }
 
 @Entity({ name: 'Photo' })
@@ -38,13 +31,6 @@ export class Photo implements IPhoto {
 
   @Column()
   link: string;
-
-  @Column({
-    type: 'enum',
-    enum: photoStatus,
-    default: photoStatus.PRIVATE,
-  })
-  status: photoStatus;
 
   @CreateDateColumn({ name: 'date_created', type: 'timestamp' })
   createdAt: Date;
