@@ -12,10 +12,11 @@ import {
   UseGuards,
   Patch,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBasicAuth, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { GetUser } from 'src/share/decorators/get-user.decorator';
 import { UpdateUserDto, UserProfileDto } from './user.dto';
 import { User } from './user.entity';
@@ -27,14 +28,14 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiBasicAuth('JWT-auth')
-  @UseGuards(JwtGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Get('/profile')
   async getUser(@GetUser() user): Promise<User> {
     return this.userService.getMe(user.id);
   }
 
   @ApiBearerAuth('JWT-auth')
-  @UseGuards(JwtGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/update')
   async updateUserProfile(@GetUser() user, @Body() data: UpdateUserDto) {
     await this.userService.edit(user.id, data);

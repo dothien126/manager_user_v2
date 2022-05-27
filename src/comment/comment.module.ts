@@ -7,7 +7,7 @@ import { CommentController } from './comment.controller';
 import { UserModule } from 'src/user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Comment]), PostModule, UserModule],
+  imports: [TypeOrmModule.forFeature([Comment]), UserModule, PostModule],
   controllers: [CommentController],
   providers: [CommentService],
 })

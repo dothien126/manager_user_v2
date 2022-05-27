@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { CreateAlbumDto, InviteToAlbum, UpdateAlbumDto } from './album.dto';
 import { AlbumService } from './album.service';
 
 @Controller('album')
 @ApiTags('Album')
 @ApiBearerAuth()
-@UseGuards(JwtGuard)
+@UseGuards(JwtAuthGuard)
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 

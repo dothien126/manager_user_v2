@@ -6,14 +6,16 @@ import { AuthModule } from './auth/auth.module';
 import { typeOrmOptions } from './configs/database.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostModule } from './post/post.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
     UserModule,
     AlbumModule,
-    PhotoModule,
+    // PhotoModule,
     AuthModule,
     // PostModule,
+    // CommentModule,
     TypeOrmModule.forRootAsync(typeOrmOptions),
   ],
   controllers: [],

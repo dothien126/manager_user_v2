@@ -13,8 +13,6 @@ import { PostService } from "./post.service";
 export class PostController {
   constructor(
     private readonly postService: PostService,
-    @InjectRolesBuilder()
-    private readonly roleBuilder: RolesBuilder,
   ) { }
 
   @Get()
@@ -38,52 +36,21 @@ export class PostController {
     return { message: 'Post created!', data }
   }
 
-  @Auth({
-    resource: AppResource.POST,
-    action: 'create',
-    possession: 'own'
-  })
   @Put(':id')
   async editPost(
     @Param('id') id: string,
     @Body() dto: EditPostDto,
     @GetUser() author: User,
   ) {
-    let data: any;
-
-    if (
-      this.roleBuilder.can(author.role).updateAny(AppResource.POST).granted
-    ) {
-      // edit - update any post
-      data = await this.postService.editPost(id, dto)
-    } else {
-      // edit - update a post
-      data = await this.postService.editPost(id, dto, author);
-    }
-
-    return { message: 'Post edited', data }
+  
   }
 
-  @Auth({
-    resource: AppResource.POST,
-    action: 'delete',
-    possession: 'own',
-  })
+
   @Delete(':id')
   async deletePost(
     @Param('id') id: string,
      @GetUser() author: User,
     ) {
-    let data: any;
 
-    if (
-      this.roleBuilder.can(author.role).deleteAny(AppResource.POST).granted
-    ) {
-      data = await this.postService.deletePost(id);
-    } else {
-      data = await this.postService.deletePost(id, author);
-    }
-
-    return { message: 'Post deleted', data };
   }
 }

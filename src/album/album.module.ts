@@ -1,7 +1,7 @@
 import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
 import { AlbumController } from './album.controller';
 import { Album } from './album.entity';
@@ -11,7 +11,7 @@ import { AlbumService } from './album.service';
   imports: [TypeOrmModule.forFeature([Album]), 
   MailerModule,
   UserModule,
-  JwtModule,
+  AuthModule,
 ],
   controllers: [AlbumController],
   providers: [AlbumService],
