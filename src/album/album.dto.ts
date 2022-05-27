@@ -27,15 +27,3 @@ export class UpdateAlbumDto {
   readonly description: string;
 }
 
-export class InviteToAlbum {
-  @ApiProperty({ example: 'abc@gmail.com' })
-  @IsEmail()
-  @IsString()
-  @IsNotEmpty()
-  readonly email: string;
-
-  @ApiProperty({ example: 'AlbumId' })
-  @IsString()
-  @IsNotEmpty()
-  readonly albumId: string;
-}

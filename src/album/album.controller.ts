@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { CreateAlbumDto, InviteToAlbum, UpdateAlbumDto } from './album.dto';
+import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 import { AlbumService } from './album.service';
 
 @Controller('album')
@@ -39,11 +39,6 @@ export class AlbumController {
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.albumService.delete(id)
-  }
-
-  @Post('invite-to-album')
-  async inviteToAlbum(@Body() data: InviteToAlbum, @Req() req) {
-    return await this.albumService.invite(data)
   }
 
   @Get('handle/:token')

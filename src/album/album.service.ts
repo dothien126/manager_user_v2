@@ -6,7 +6,7 @@ import { use } from 'passport';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
-import { CreateAlbumDto, InviteToAlbum, UpdateAlbumDto } from './album.dto';
+import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 import { Album } from './album.entity';
 import { AlbumNotFoundException } from './exceptions/album-not-found.exception';
 
@@ -79,53 +79,6 @@ export class AlbumService {
     } catch (error) {
       throw new Error();
     }
-  }
-
-  async invite(data: InviteToAlbum) {
-    try {
-      const user = await this.userService.findByEmail(data.email);
-      if (!user) {
-        return new NotFoundException('User email not found!');
-      }
-
-      const album = await this.findOne(data.albumId);
-      if (!album) {
-        return new NotFoundException('Email dose not exist!');
-      }
-
-      const payload = {
-        email: data.email,
-        albumId: data.albumId,
-      };
-      const inviteToken = this.jwtService.sign(payload);
-      const link = `localhost:3000/album/handle/${inviteToken}`;
-      this.sendMailInvite(data.email, link);
-      return;
-    } catch (error) {
-      return new Error(error);
-    }
-  }
-
-  private sendMailInvite(user, link): void {
-    this.mailerService
-      .sendMail({
-        to: user.email,
-        from: 'from@example.com',
-        subject: 'Invite to Album',
-        text: 'Invite to Album!',
-        template: 'index',
-        context: {
-          title: 'Invite to Album',
-          link,
-          description: `In order to complete registration please click Invite`,
-        },
-      })
-      .then(() => {
-        console.log('Invite User: Send Mail Invite successfully!');
-      })
-      .catch(() => {
-        console.log('Invite User: Send Mail Invite Failed!');
-      });
   }
 
   async getAlbumJoin(user: User): Promise<Album[]> {
